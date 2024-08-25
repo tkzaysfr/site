@@ -1,1 +1,212 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <title>ZAYS.DEV</title>
+    <style>
+#cursorSvg {
+    position: fixed;
+    z-index: 9999999;
+    width: 20px; /* Adjust size as needed */
+    height: 20px; /* Adjust size as needed */
+    border-radius: 50%;
+    pointer-events: none;
+    background: transparent;
+    cursor: none;
+}
+
+        line,
+        circle {
+            stroke: url("#gradient");
+            stroke-width: 3;
+            transform-origin: 50% 50%;
+            opacity: 1;
+        }
+
+        line {
+            animation: op-1 2s ease-out infinite;
+        }
+
+        circle {
+            animation: op-1 2s ease-out 1s infinite, op-2 2s ease-out 1s infinite;
+        }
+
+        @keyframes op-1 {
+            50% {
+                opacity: .1;
+                transform: rotate(7200deg);
+            }
+        }
+
+        @keyframes op-2 {
+            50% {
+                transform: scale(.2);
+            }
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            cursor: none;
+
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .intro {
+            text-align: center;
+            z-index: 50;
+        }
+
+        .intro h1 {
+            font-size: 3em;
+            margin: 0;
+            padding: 0;
+        }
+
+        .intro button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            color: white;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .intro button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: .15em;
+        }
+
+        .social-buttons {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .social-buttons a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            color: white;
+            background-color: transparent;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .social-buttons a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: .15em;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1><span style="color: purple;">z</span><span style="color: white;">a</span><span style="color: purple;">y</span><span style="color: white;">s</span><span style="color: purple;">.</span><span style="color: white;">d</span><span style="color: purple;">e</span><span style="color: white;">v</span></h1>
+        <button id="enterButton">Enter</button>
+        <div class="social-buttons" id="socialButtons">
+            <a href="https://twitter.com/tkzays" target="_blank" style="color: purple;">Twitter</a>
+            <a href="https://discord.gg/rt8wd6WFfx" target="_blank" style="color: purple;">Discord</a>
+        </div>
+    </div>
+    <div id="cursor" class="cursor"></div>
+    <svg id="cursorSvg" class="cursorSvg" width="20" height="20">
+        <defs>
+            <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="white"></stop>
+                <stop offset="100%" stop-color="white"></stop>
+            </linearGradient>
+        </defs>
+        <circle r="10" cx="10" cy="10" fill="none"></circle>
+        <line x1="0" y1="0" x2="20" y2="20"></line>
+        <line x1="0" y1="20" x2="20" y2="0"></line>
+    </svg>
+    <video id="bgVideo">
+        <source src="bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    const enterButton = document.getElementById('enterButton');
+    const socialButtons = document.getElementById('socialButtons');
+    const video = document.getElementById('bgVideo');
+    const cursor = document.getElementById('cursor');
+    
+    enterButton.addEventListener('click', function() {
+        enterButton.style.display = 'none';
+        socialButtons.style.display = 'block';
+        video.style.display = 'block';
+        video.play();
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+            document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+            document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+            document.documentElement.msRequestFullscreen();
+        }
+    });
+
+    document.addEventListener('mousemove', (event) => {
+            const cursor = document.querySelector('.cursorSvg');
+            cursor.style.left = `${event.pageX-10}px`;
+            cursor.style.top = `${event.pageY-10}px`;
+        });
+
+    var rev = "fwd";
+    function titlebar(val) {
+        var msg  = "ZAYS.DEV";
+        var speed = 100;
+        var pos = val;
+        msg = "   |-" + msg + "-|";
+        var le = msg.length;
+        if (rev === "fwd") {
+            if (pos < le) {
+                pos += 1;
+                document.title = msg.substr(0, pos);
+                window.setTimeout(() => titlebar(pos), speed);
+            } else {
+                rev = "bwd";
+                window.setTimeout(() => titlebar(pos), speed);
+            }
+        } else {
+            if (pos > 0) {
+                pos -= 1;
+                document.title = msg.substr(le - pos, le);
+                window.setTimeout(() => titlebar(pos), speed);
+            } else {
+                rev = "fwd";
+                window.setTimeout(() => titlebar(pos), speed);
+            }
+        }
+    }
+    titlebar(0);
+});
+
+    </script>
+</body>
+</html>
